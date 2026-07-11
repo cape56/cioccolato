@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cioccolato - Panel de Inventario</title>
+    <!-- ⚡ Cargamos Tailwind CSS desde internet en un segundo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen p-8">
+
+    <div class="max-w-5xl mx-auto">
+        
+        <!-- 🔑 BARRA DE NAVEGACIÓN INTEGRADADA (Manejo de Sesiones) -->
+        <nav class="bg-gray-800 p-4 mb-8 rounded-lg flex justify-between items-center border border-gray-700 shadow-md">
+            <div>
+                <h1 class="text-2xl font-bold text-pink-500">cioccolato</h1>
+                <p class="text-gray-400 text-xs">Catálogo público e Inventario Interno</p>
+            </div>
+            
+            <div>
+                {% if es_admin %}
+                    <!-- Si inició sesión: Muestra el estatus y el botón de cerrar sesión -->
+                    <span class="text-emerald-400 font-medium text-sm mr-4">👋 ¡Hola, Administrador!</span>
+                    <a href="/logout" class="bg-red-600 hover:bg-red-700 text-white font-bold py-1.5 px-4 rounded text-xs transition shadow">
+                        Salir del Sistema
+                    </a>
+                {% else %}
+                    <!-- Si es público: Formulario compacto de login conectado a la BD -->
+                    <form action="/login" method="POST" class="inline-flex space-x-2">
+                        <input type="text" name="usuario" placeholder="Usuario" required 
+                               class="bg-gray-700 text-xs rounded p-2 w-28 text-white border border-gray-600 focus:outline-none focus:border-pink-500">
+                        <input type="password" name="clave" placeholder="Contraseña" required 
+                               class="bg-gray-700 text-xs rounded p-2 w-28 text-white border border-gray-600 focus:outline-none focus:border-pink-500">
+                        <button type="submit" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-1.5 px-4 rounded text-xs transition shadow">
+                            🔑 Entrar
+                        </button>
+                    </form>
+                {% endif %}
+            </div>
+        </nav>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <!-- COLUMN 1: FORMULARIO DINÁMICO (CREATE / BANNER) -->
+            <div class="h-fit">
+                {% if es_admin %}
+                    <!-- Se muestra SÓLO al Administrador -->
+                    <div class="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-750">
+                        <h2 class="text-xl font-semibold mb-4 text-pink-400">📝 Cargar Producto</h2>
+                        
+                        <form action="/nuevo-producto" method="POST" class="space-y-4" enctype="multipart/form-data">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-400 mb-1">Nombre del Insumo</label>
+                                <input type="text" name="nombre" placeholder="Ej. Agenda 2026" required
+                                       class="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white focus:outline-none focus:border-pink-500">
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-400 mb-1">Precio ($)</label>
+                                    <input type="number" step="0.01" name="precio" placeholder="10.50" required
+                                           class="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white focus:outline-none focus:border-pink-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-400 mb-1">Stock Inicial</label>
+                                    <input type="number" name="stock" placeholder="20" required
+                                           class="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white focus:outline-none focus:border-pink-500">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-xs font-medium text-gray-400 mb-1">Categoría</label>
+                                <select name="categoria" class="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white focus:outline-none focus:border-pink-500">
+                                    <option value="Agendas">Agendas</option>
+                                    <option value="Toppers">Toppers</option>
+                                    <option value="Stickers">Stickers</option>
+                                    <option value="Otros">Otros</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-400 mb-1">Imagen del Producto</label>
+                                <input type="file" name="imagen" class="w-full text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-gray-700 file:text-pink-400 hover:file:bg-gray-600">
+                            </div>
+                            <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 rounded transition duration-200 shadow-md">
+                                💾 Guardar en Laragon
+                            </button>
+                        </form>
+                    </div>
+                {% else %}
+                    <!-- Se muestra al PÚBLICO GENERAL cuando no hay sesión activa -->
+                    <div class="bg-gradient-to-br from-pink-950 to-purple-950 p-6 rounded-lg shadow-lg border border-pink-900/30 text-center">
+                        <span class="text-3xl">✨</span>
+                        <h3 class="text-xl font-bold text-pink-400 mt-2 mb-2">Diseños Creativos</h3>
+                        <p class="text-gray-300 text-xs leading-relaxed">
+                            Explora nuestra galería de insumos y recursos digitales disponibles. Si deseas realizar un pedido personalizado, ponte en contacto directo con nuestro equipo.
+                        </p>
+                        <div class="mt-4 pt-4 border-t border-pink-900/40 text-pink-300 text-xs font-medium">
+                            📍 Los Teques, Miranda
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- COLUMN 2 & 3: TABLA DE PRODUCTOS (READ - SIEMPRE VISIBLE) -->
+            <div class="md:col-span-2 bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-750">
+                <h2 class="text-xl font-semibold mb-4 text-emerald-400">📦 Productos Disponibles</h2>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-gray-700 text-gray-400 text-sm">
+                                <th class="pb-3 font-medium">ID</th>
+                                <th class="pb-3 font-medium">Producto</th>
+                                <th class="pb-3 font-medium">Categoría</th>
+                                <th class="pb-3 font-medium">Precio</th>
+                                <th class="pb-3 font-medium">Disponible</th>
+                                <th class="pb-3 font-medium">Imagen</th>
+                                {% if es_admin %}
+                                    <!-- Cabecera condicional para acciones críticas -->
+                                    <th class="pb-3 font-medium">Acciones</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-700 text-sm">
+                            {% for fila in inventario %}
+                            <tr class="hover:bg-gray-750/50 transition">
+                                <td class="py-3 font-bold text-gray-500">#{{ fila[0] }}</td>
+                                <td class="py-3 text-white font-medium">{{ fila[1] }}</td>
+                                <td class="py-3"><span class="bg-gray-700 px-2 py-0.5 rounded text-xs text-gray-300">{{ fila[4] }}</span></td>
+                                <td class="py-3 text-pink-400 font-semibold">${{ fila[2] }}</td>
+                                <td class="py-3 font-medium text-emerald-400">{{ fila[3] }} Unidades</td>
+                                <td class="py-3">
+                                    {% if fila[5] %}
+                                        <img src="{{ fila[5] }}" alt="Imagen del producto" class="w-12 h-12 object-cover rounded shadow-md border border-gray-700">
+                                    {% else %}
+                                        <span class="text-gray-500 text-xs">Sin foto</span>
+                                    {% endif %}
+                                </td>
+                                
+                                {% if es_admin %}
+                                    <!-- Botones protegidos: Solo aparecen al iniciar sesión -->
+                                    <td class="py-3 space-x-1">
+                                        <a href="/update/{{ fila[0] }}" class="bg-amber-500 hover:bg-amber-600 text-gray-900 font-bold py-1 px-2 rounded text-xs transition inline-block">
+                                            ✏️
+                                        </a>
+                                        <a href="/eliminar/{{ fila[0] }}" class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-xs transition inline-block"
+                                           onclick="return confirm('¿Estás seguro de eliminar este insumo?')">
+                                            ❌
+                                        </a>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
