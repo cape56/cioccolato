@@ -136,8 +136,7 @@ def home():
     # 🚨 TRUCO DE MAÑANA: Creamos las tablas automáticamente si es la primera vez que corre en Render
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS usuarios (
-            id INTEGER PRIMAR
-            Y KEY AUTOINCREMENT,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             usuario TEXT NOT NULL UNIQUE,
             clave TEXT NOT NULL
         )
