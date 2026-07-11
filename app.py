@@ -203,7 +203,7 @@ def nuevo_producto():
 # ==========================================
 # 🛠️ OPERACIÓN: UPDATE (MOSTRAR)
 # ==========================================
-@app.route('/update/<int:id_producto>')
+""" @app.route('/update/<int:id_producto>')
 def mostrar_editar(id_producto):
     if 'usuario' not in session:
         return "Acceso denegado.", 403
@@ -235,10 +235,10 @@ def actualizar_producto(id_producto):
     cursor = conexion.cursor()
     
     comando = """
-        UPDATE productos 
+        """ UPDATE productos 
         SET nombre = ?, precio = ?, stock = ?, categoria = ? 
         WHERE id = ?
-    """
+    """ """
     cursor.execute(comando, (nuevo_nombre, nuevo_precio, nuevo_stock, nueva_categoria, id_producto))
     
     conexion.commit()
@@ -262,6 +262,6 @@ def eliminar_producto(id_producto):
     cursor.close()
     conexion.close()
     return redirect(url_for('home'))
-
+ """
 if __name__ == '__main__':
     app.run(debug=True)
