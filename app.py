@@ -200,68 +200,8 @@ def nuevo_producto():
     conexion.close()
     return redirect(url_for('home'))
 
-# ==========================================
-# 🛠️ OPERACIÓN: UPDATE (MOSTRAR)
-# ==========================================
-""" @app.route('/update/<int:id_producto>')
-def mostrar_editar(id_producto):
-    if 'usuario' not in session:
-        return "Acceso denegado.", 403
 
-    conexion = obtener_conexion()
-    cursor = conexion.cursor()
-    sql = "SELECT id, nombre, precio, stock, categoria, imagen FROM productos WHERE id = ?"
-    cursor.execute(sql, (id_producto,))
-    producto = cursor.fetchone()
-    
-    cursor.close()
-    conexion.close()
-    return render_template('editar.html', producto=producto)
-
-# ==========================================
-# 💾 OPERACIÓN: UPDATE (GUARDAR)
-# ==========================================
-@app.route('/actualizar/<int:id_producto>', methods=['POST'])
-def actualizar_producto(id_producto):
-    if 'usuario' not in session:
-        return "Acceso denegado.", 403
-
-    nuevo_nombre = request.form.get('nombre')
-    nuevo_precio = request.form.get('precio')
-    nuevo_stock = request.form.get('stock')
-    nueva_categoria = request.form.get('categoria')
-    
-    conexion = obtener_conexion()
-    cursor = conexion.cursor()
-    
-    comando = """
-        """ UPDATE productos 
-        SET nombre = ?, precio = ?, stock = ?, categoria = ? 
-        WHERE id = ?
-    """ """
-    cursor.execute(comando, (nuevo_nombre, nuevo_precio, nuevo_stock, nueva_categoria, id_producto))
-    
-    conexion.commit()
-    cursor.close()
-    conexion.close()
-    return redirect(url_for('home'))
-
-# ==========================================
-# ❌ OPERACIÓN: DELETE
-# ==========================================
-@app.route('/eliminar/<int:id_producto>')
-def eliminar_producto(id_producto):
-    if 'usuario' not in session:
-        return "Acceso denegado.", 403
-
-    conexion = obtener_conexion()
-    cursor = conexion.cursor()
-    sql = "DELETE FROM productos WHERE id = ?"
-    cursor.execute(sql, (id_producto,))
-    conexion.commit()
-    cursor.close()
-    conexion.close()
-    return redirect(url_for('home'))
- """
+ 
+ 
 if __name__ == '__main__':
     app.run(debug=True)
